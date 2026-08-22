@@ -11,7 +11,17 @@ export class SqliteDatabase {
         mkdirSync(dirname(filename), { recursive: true });
       } catch {}
     }
-    this.db = new DatabaseSync(filename);
+    try {
+      this.db = new DatabaseSync(filename);
+    } catch (err) {
+      if (err?.code === 'ERR_SQLITE_ERROR' && (err?.errcode === 14 || String(err?.message).includes('unable to open'))) {
+        console.warn(`[SqliteDatabase] Path "${filename}" not writable in this environment. Falling back to in-memory SQLite.`);
+        this.filename = ':memory:';
+        this.db = new DatabaseSync(':memory:');
+      } else {
+        throw err;
+      }
+    }
     this.db.exec('PRAGMA foreign_keys = ON;');
     this._initSchema();
   }
