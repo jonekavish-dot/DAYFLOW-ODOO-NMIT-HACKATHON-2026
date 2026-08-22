@@ -129,3 +129,11 @@ test('SPA route fallback serves index.html for application routes', async () => 
     }
   });
 });
+
+test('Vercel serverless entrypoint and default exports satisfy runtime contract', async () => {
+  const vercelHandler = (await import('../api/index.js')).default;
+  const serverHandler = (await import('../src/server.js')).default;
+  assert.equal(typeof vercelHandler, 'function', 'api/index.js must export a default function');
+  assert.equal(typeof serverHandler, 'function', 'src/server.js must export a default function');
+});
+
