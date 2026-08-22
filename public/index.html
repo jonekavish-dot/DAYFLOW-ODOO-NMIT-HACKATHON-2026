@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Dayflow Human Resource Management System">
+    <title>Dayflow HRMS</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%234F46E5'/><path d='M10 16a6 6 0 1112 0' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round'/><circle cx='16' cy='10' r='2' fill='white'/></svg>">
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <!-- ===== AUTH SHELL ===== -->
+    <div id="auth-shell" class="auth-shell">
+      <div class="auth-brand">
+        <div class="auth-brand-inner">
+          <div class="auth-logo"><span class="logo-icon">◒</span> Dayflow</div>
+          <h1>Every workday,<br>perfectly aligned.</h1>
+          <p>Attendance, leave, employee records, and payroll — one focused workspace for your entire team.</p>
+          <div class="auth-brand-dots"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="auth-form-side">
+        <div class="auth-form-wrap">
+          <div id="auth-message" class="alert" role="alert" aria-live="polite"></div>
+          <div id="dev-code-box"></div>
+
+          <!-- Login -->
+          <form id="login-form" class="auth-form">
+            <div class="auth-form-header">
+              <h2>Welcome back</h2>
+              <p>Sign in to your Dayflow account</p>
+            </div>
+            <label class="field"><span class="field-label">Email</span><input name="email" type="email" required autocomplete="email" placeholder="you@company.com"></label>
+            <label class="field"><span class="field-label">Password</span>
+              <div class="pw-wrap"><input name="password" type="password" required autocomplete="current-password" placeholder="Enter your password" id="login-pw"><button type="button" class="pw-toggle" data-target="login-pw" aria-label="Toggle password visibility">Show</button></div>
+            </label>
+            <button class="btn btn-primary btn-full" type="submit"><span class="btn-text">Sign in</span></button>
+            <p class="auth-switch">New here? <button type="button" class="link-btn" data-auth-view="register">Create an account</button></p>
+            <div class="quick-login">
+              <p class="quick-login-label">Quick login for testing</p>
+              <div class="quick-login-row">
+                <button type="button" class="btn btn-outline btn-sm" data-quick="admin"><span class="ql-dot ad"></span>Admin</button>
+                <button type="button" class="btn btn-outline btn-sm" data-quick="hr"><span class="ql-dot hr"></span>HR Officer</button>
+                <button type="button" class="btn btn-outline btn-sm" data-quick="employee"><span class="ql-dot em"></span>Employee</button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Register -->
+          <form id="register-form" class="auth-form" hidden>
+            <div class="auth-form-header"><h2>Create account</h2><p>Start managing your workdays</p></div>
+            <div class="field-row">
+              <label class="field"><span class="field-label">Full name</span><input name="fullName" maxlength="120" required placeholder="John Doe"></label>
+              <label class="field"><span class="field-label">Employee ID</span><input name="employeeId" maxlength="40" required placeholder="DF-EMP-002"></label>
+            </div>
+            <label class="field"><span class="field-label">Email</span><input name="email" type="email" required placeholder="you@company.com"></label>
+            <label class="field"><span class="field-label">Role</span><select name="role"><option value="EMPLOYEE">Employee</option><option value="HR">HR Officer</option></select></label>
+            <label class="field"><span class="field-label">Password</span>
+              <div class="pw-wrap"><input name="password" type="password" required minlength="10" placeholder="Min 10 chars, upper, lower, number, symbol" id="reg-pw"><button type="button" class="pw-toggle" data-target="reg-pw" aria-label="Toggle password visibility">Show</button></div>
+            </label>
+            <button class="btn btn-primary btn-full" type="submit">Create account</button>
+            <p class="auth-switch">Already registered? <button type="button" class="link-btn" data-auth-view="login">Sign in</button></p>
+          </form>
+
+          <!-- Verify -->
+          <form id="verify-form" class="auth-form" hidden>
+            <div class="auth-form-header"><h2>Verify your email</h2><p>Enter the code shown after registration</p></div>
+            <label class="field"><span class="field-label">Email</span><input name="email" type="email" required></label>
+            <label class="field"><span class="field-label">Verification code</span><input name="code" inputmode="numeric" maxlength="6" required placeholder="6-digit code"></label>
+            <button class="btn btn-primary btn-full" type="submit">Verify email</button>
+            <p class="auth-switch"><button type="button" class="link-btn" data-auth-view="login">Back to sign in</button></p>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== APP SHELL ===== -->
+    <div id="app-shell" class="app-shell" hidden>
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-top">
+          <div class="sidebar-logo"><span class="logo-icon">◒</span> Dayflow</div>
+          <button id="sidebar-close" class="icon-btn sidebar-x" aria-label="Close sidebar">&times;</button>
+        </div>
+        <nav id="sidebar-nav" class="sidebar-nav" aria-label="Main navigation"></nav>
+        <div class="sidebar-bottom">
+          <button id="logout-btn" class="sidebar-link logout-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Sign out</span></button>
+        </div>
+      </aside>
+      <div id="sidebar-overlay" class="sidebar-overlay"></div>
+      <div class="main-wrap">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button id="menu-btn" class="icon-btn menu-btn" aria-label="Open menu"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+            <h1 id="page-title" class="topbar-title">Dashboard</h1>
+          </div>
+          <div class="topbar-right">
+            <button id="notif-btn" class="icon-btn notif-btn" aria-label="Notifications"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg><span id="notif-badge" class="notif-badge" hidden>0</span></button>
+            <div id="user-chip" class="user-chip"><div id="user-avatar" class="avatar-sm">U</div><span id="user-name">User</span></div>
+          </div>
+        </header>
+        <main class="page-body">
+          <div id="app-message" class="alert" role="alert" aria-live="polite"></div>
+          <section id="view" class="view"></section>
+        </main>
+      </div>
+    </div>
+
+    <!-- Toast container -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Modal -->
+    <div id="modal-overlay" class="modal-overlay" hidden>
+      <div class="modal" role="dialog" aria-modal="true">
+        <div id="modal-header" class="modal-header"></div>
+        <div id="modal-body" class="modal-body"></div>
+        <div id="modal-footer" class="modal-footer"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
