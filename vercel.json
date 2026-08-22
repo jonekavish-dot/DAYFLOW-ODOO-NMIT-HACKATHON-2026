@@ -1,24 +1,12 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "outputDirectory": "public",
-  "functions": {
-    "api/index.js": {
-      "runtime": "nodejs22.x",
-      "includeFiles": "src/**"
-    }
-  },
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "source": "/api/(.*)",
+      "destination": "/api/index.js"
     },
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!api/|.*\\..*).*)",
+      "destination": "/index.html"
     }
   ]
 }

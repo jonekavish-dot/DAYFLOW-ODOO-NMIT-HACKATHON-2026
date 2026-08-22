@@ -1,14 +1,24 @@
-import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { hashPassword } from './auth.js';
+
+let DatabaseSync = null;
+try {
+  const sqliteModule = await import('node:sqlite');
+  DatabaseSync = sqliteModule.DatabaseSync || sqliteModule.default?.DatabaseSync;
+} catch (err) {
+  console.warn('node:sqlite dynamic import warning:', err?.message);
+}
 
 export function openDatabase(filename) {
   if (filename && filename !== ':memory:' && !filename.startsWith(':memory:')) {
     try {
       mkdirSync(dirname(filename), { recursive: true });
     } catch {}
+  }
+  if (!DatabaseSync) {
+    throw new Error('SQLite (node:sqlite) is not available in this Node runtime. Node 22.5+ is required.');
   }
   const db = new DatabaseSync(filename);
   db.exec('PRAGMA foreign_keys = ON;');
