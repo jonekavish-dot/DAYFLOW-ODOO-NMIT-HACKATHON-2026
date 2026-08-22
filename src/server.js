@@ -506,6 +506,16 @@ export async function createApp({ db: customDb, dbPath, databaseUrl, seed = true
   return { handler, close: () => db.close(), db };
 }
 
+let defaultAppPromise = null;
+
+export default async function defaultHandler(req, res) {
+  if (!defaultAppPromise) {
+    defaultAppPromise = createApp();
+  }
+  const app = await defaultAppPromise;
+  return app.handler(req, res);
+}
+
 if (runtimeProcess?.argv?.[1] && resolve(runtimeProcess.argv[1]) === fileURLToPath(import.meta.url)) {
   const app = await createApp();
   const port = Number(runtimeProcess.env.PORT || 3000);
