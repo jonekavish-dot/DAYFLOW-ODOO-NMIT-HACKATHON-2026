@@ -40,7 +40,7 @@ const userProfile = (db, id) => db.prepare(`
          p.full_name AS fullName, p.phone, p.address, p.department, p.job_title AS jobTitle,
          p.start_date AS startDate, p.salary_cents AS salaryCents, p.profile_photo_url AS profilePhotoUrl,
          p.document_url AS documentUrl
-  FROM users u JOIN employee_profiles p ON p.user_id = u.id WHERE u.id = ?`).get(id);
+  FROM users u JOIN employee_profiles p ON p.user_id = u.id WHERE u.id = ? OR u.employee_id = ?`).get(id, id);
 
 const attendanceRow = (db, id) => db.prepare(`
   SELECT a.id, a.work_date AS workDate, a.check_in_at AS checkInAt, a.check_out_at AS checkOutAt, a.status, a.notes,
