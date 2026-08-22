@@ -204,8 +204,12 @@ async function handleRoute() {
   renderSidebarNav();
   await fetchNotifications();
 
-  // Close mobile sidebar
-  closeSidebar();
+  // Apply saved sidebar preference on desktop / close on mobile
+  if (window.innerWidth > 860 && localStorage.getItem('dayflowSidebarCollapsed') === 'true') {
+    closeSidebar(false);
+  } else if (window.innerWidth <= 860) {
+    closeSidebar(false);
+  }
 
   // Route Dispatcher
   clearAlert($('#app-message'));
@@ -405,19 +409,41 @@ $('#logout-btn').addEventListener('click', () => {
   navigateTo('/login');
 });
 
-// Mobile Sidebar Toggle
-$('#menu-btn').addEventListener('click', () => {
-  $('#sidebar').classList.add('open');
-  $('#sidebar-overlay').classList.add('open');
-});
-
-$('#sidebar-close').addEventListener('click', closeSidebar);
-$('#sidebar-overlay').addEventListener('click', closeSidebar);
-
-function closeSidebar() {
+// Sidebar Toggle & Collapse Handlers (Desktop & Mobile with localStorage persistence)
+function closeSidebar(persist = true) {
+  $('#sidebar').classList.add('closed');
   $('#sidebar').classList.remove('open');
+  $('#app-shell').classList.add('sidebar-collapsed');
   $('#sidebar-overlay').classList.remove('open');
+  if (persist && window.innerWidth > 860) {
+    localStorage.setItem('dayflowSidebarCollapsed', 'true');
+  }
 }
+
+function openSidebar(persist = true) {
+  $('#sidebar').classList.remove('closed');
+  $('#sidebar').classList.add('open');
+  $('#app-shell').classList.remove('sidebar-collapsed');
+  if (window.innerWidth <= 860) {
+    $('#sidebar-overlay').classList.add('open');
+  }
+  if (persist && window.innerWidth > 860) {
+    localStorage.setItem('dayflowSidebarCollapsed', 'false');
+  }
+}
+
+function toggleSidebar() {
+  const isClosed = $('#sidebar').classList.contains('closed') || (window.innerWidth <= 860 && !$('#sidebar').classList.contains('open'));
+  if (isClosed) {
+    openSidebar(true);
+  } else {
+    closeSidebar(true);
+  }
+}
+
+$('#menu-btn').addEventListener('click', toggleSidebar);
+$('#sidebar-close').addEventListener('click', () => closeSidebar(true));
+$('#sidebar-overlay').addEventListener('click', () => closeSidebar(false));
 
 // ==========================================================================
 // Sidebar Navigation Component

@@ -484,9 +484,35 @@ textarea {
 }
 
 .sidebar-x {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: var(--sidebar-text);
-  font-size: 1.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  padding: 0.35rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sidebar-x:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.sidebar.closed {
+  transform: translateX(-100%);
+}
+
+.app-shell.sidebar-collapsed .main-wrap {
+  margin-left: 0;
+}
+
+.menu-btn {
+  display: inline-flex;
+  cursor: pointer;
 }
 
 .sidebar-nav {
@@ -602,11 +628,26 @@ textarea {
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.875rem;
 }
 
 .menu-btn {
-  display: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-main);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-main);
+  padding: 0.4rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.menu-btn:hover {
+  background: #e2e8f0;
+  border-color: #cbd5e1;
+  color: var(--primary);
 }
 
 .topbar-title {
