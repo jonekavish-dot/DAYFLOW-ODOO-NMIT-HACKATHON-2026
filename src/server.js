@@ -120,15 +120,28 @@ function runProfileUpdate(db, targetId, changes) {
 }
 
 async function serveStatic(res, pathname) {
-  const requested = pathname === '/' ? '/index.html' : pathname;
-  const filename = resolve(publicDir, `.${requested}`);
-  if (!filename.startsWith(publicDir + sep)) return json(res, 404, { error: 'Not found.' });
+  const hasExt = pathname.includes('.') && !pathname.endsWith('/');
+  if (hasExt) {
+    const filename = resolve(publicDir, `.${pathname}`);
+    if (!filename.startsWith(publicDir + sep)) return json(res, 404, { error: 'Not found.' });
+    try {
+      const content = await readFile(filename);
+      const extension = filename.slice(filename.lastIndexOf('.'));
+      res.writeHead(200, { 'Content-Type': mime[extension] || 'application/octet-stream' });
+      return res.end(content);
+    } catch {
+      return json(res, 404, { error: 'Not found.' });
+    }
+  }
+
+  // SPA Route Fallback: serve index.html for all top-level application routes
   try {
-    const content = await readFile(filename);
-    const extension = filename.slice(filename.lastIndexOf('.'));
-    res.writeHead(200, { 'Content-Type': mime[extension] || 'application/octet-stream' });
-    res.end(content);
-  } catch { json(res, 404, { error: 'Not found.' }); }
+    const indexHtml = await readFile(join(publicDir, 'index.html'));
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+    res.end(indexHtml);
+  } catch {
+    json(res, 404, { error: 'Not found.' });
+  }
 }
 
 export function createApp({ dbPath = DEFAULT_DB, seed = true } = {}) {
@@ -186,6 +199,14 @@ export function createApp({ dbPath = DEFAULT_DB, seed = true } = {}) {
       // --- Authenticated routes ---
       const currentUser = bearerUser(db, req);
       if (req.method === 'GET' && pathname === '/api/auth/me') return json(res, 200, { user: currentUser });
+
+      if (req.method === 'POST' && pathname === '/api/auth/change-password') {
+        const user = db.prepare('SELECT * FROM users WHERE id = ?').get(currentUser.id);
+        if (!user || !verifyPassword(body.currentPassword || '', user.password_hash)) fail(400, 'Current password is incorrect.');
+        const newPw = password(body.newPassword);
+        db.prepare('UPDATE users SET password_hash = ? WHERE id = ?').run(hashPassword(newPw), currentUser.id);
+        return json(res, 200, { message: 'Password updated successfully.' });
+      }
 
       // --- Dashboard ---
       if (req.method === 'GET' && pathname === '/api/dashboard') {
@@ -318,6 +339,14 @@ export function createApp({ dbPath = DEFAULT_DB, seed = true } = {}) {
           p.salary_cents AS salaryCents, p.profile_photo_url AS profilePhotoUrl, p.document_url AS documentUrl
           FROM users u JOIN employee_profiles p ON p.user_id = u.id ORDER BY p.full_name`).all();
         return json(res, 200, { employees });
+      }
+
+      const employeeGetMatch = /^\/api\/employees\/([^/]+)$/.exec(pathname);
+      if (employeeGetMatch && req.method === 'GET') {
+        requireRole(currentUser, 'HR', 'ADMIN');
+        const employee = userProfile(db, employeeGetMatch[1]);
+        if (!employee) fail(404, 'Employee not found.');
+        return json(res, 200, { employee });
       }
 
       const employeeMatch = /^\/api\/employees\/([^/]+)$/.exec(pathname);

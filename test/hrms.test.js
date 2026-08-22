@@ -14,7 +14,9 @@ async function withApp(seed, run) {
       headers: { ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(body !== undefined ? { 'Content-Type': 'application/json' } : {}) },
       body: body === undefined ? undefined : JSON.stringify(body),
     });
-    return { status: response.status, data: await response.json() };
+    const contentType = response.headers.get('content-type') || '';
+    const data = contentType.includes('application/json') ? await response.json() : await response.text();
+    return { status: response.status, data, contentType };
   };
   try { return await run(request); } finally { await new Promise((resolve) => server.close(resolve)); app.close(); }
 }
@@ -98,6 +100,12 @@ test('only admins can maintain payroll and profile updates work', async () => {
     assert.equal(profileUpdate.status, 200);
     assert.equal(profileUpdate.data.profile.phone, '+91 99999 88888');
 
+    // Password change
+    const pwChange = await request('/api/auth/change-password', { method: 'POST', token: employeeToken, body: { currentPassword: 'Employee!123', newPassword: 'NewEmployee!999' } });
+    assert.equal(pwChange.status, 200);
+    const reLogin = await login(request, 'employee@dayflow.local', 'NewEmployee!999');
+    assert.ok(reLogin);
+
     const adminToken = await login(request, 'admin@dayflow.local', 'Admin!12345');
     const employees = await request('/api/employees', { token: adminToken });
     const employee = employees.data.employees.find((item) => item.email === 'employee@dayflow.local');
@@ -107,5 +115,17 @@ test('only admins can maintain payroll and profile updates work', async () => {
     assert.equal(payroll.status, 200);
     assert.equal(payroll.data.salaryCents, 7300000);
     assert.ok(payroll.data.records.some((record) => record.payPeriod === '2026-08' && record.netCents === 7300000));
+  });
+});
+
+test('SPA route fallback serves index.html for application routes', async () => {
+  await withApp(true, async (request) => {
+    const routes = ['/dashboard', '/attendance', '/leave', '/payroll', '/employees', '/notifications', '/profile', '/settings', '/login'];
+    for (const r of routes) {
+      const res = await request(r);
+      assert.equal(res.status, 200);
+      assert.ok(res.contentType.includes('text/html'));
+      assert.ok(res.data.includes('Dayflow'));
+    }
   });
 });
