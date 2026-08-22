@@ -49,6 +49,15 @@
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
+[hidden],
+.auth-shell[hidden],
+.app-shell[hidden],
+.modal-overlay[hidden],
+.auth-form[hidden],
+.notif-badge[hidden] {
+  display: none !important;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
