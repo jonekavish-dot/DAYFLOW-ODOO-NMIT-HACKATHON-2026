@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dayflow HRMS - 5-Minute Video Presentation & Demo Master Guide</title>
+  <style>
+    @page {
+      size: A4;
+      margin: 18mm 15mm 18mm 15mm;
+      @bottom-right {
+        content: counter(page);
+      }
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      background: #ffffff;
+      line-height: 1.55;
+      font-size: 10.5pt;
+    }
+    .header {
+      border-bottom: 3px solid #6366f1;
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+    }
+    .badge-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 8.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+    .badge-primary { background: #e0e7ff; color: #4338ca; }
+    .badge-success { background: #dcfce7; color: #15803d; }
+    .badge-warning { background: #fef3c7; color: #b45309; }
+    h1 {
+      font-size: 20pt;
+      color: #0f172a;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .subtitle {
+      font-size: 11pt;
+      color: #64748b;
+      font-weight: 500;
+    }
+    .meta-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 6px 16px;
+      font-size: 9.5pt;
+    }
+    .meta-box span strong {
+      color: #334155;
+    }
+    h2 {
+      font-size: 13pt;
+      color: #1e1b4b;
+      border-left: 4px solid #6366f1;
+      padding-left: 8px;
+      margin-top: 22px;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+    h3 {
+      font-size: 11.5pt;
+      color: #0f172a;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+    p {
+      margin-bottom: 8px;
+    }
+    ul, ol {
+      margin-left: 18px;
+      margin-bottom: 10px;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0 16px;
+      font-size: 9.5pt;
+    }
+    th, td {
+      border: 1px solid #cbd5e1;
+      padding: 7px 10px;
+      text-align: left;
+    }
+    th {
+      background: #f1f5f9;
+      color: #1e293b;
+      font-weight: 700;
+    }
+    .scene-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+      page-break-inside: avoid;
+    }
+    .scene-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .scene-title {
+      font-weight: 700;
+      font-size: 11.5pt;
+      color: #312e81;
+    }
+    .scene-time {
+      background: #f1f5f9;
+      color: #475569;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 8.5pt;
+      font-weight: 700;
+    }
+    .action-box {
+      background: #f8fafc;
+      border-left: 3px solid #0284c7;
+      padding: 8px 10px;
+      margin-bottom: 8px;
+      border-radius: 0 6px 6px 0;
+      font-size: 9.5pt;
+    }
+    .action-box strong {
+      color: #0369a1;
+      display: block;
+      margin-bottom: 4px;
+    }
+    .voice-box {
+      background: #fdf4ff;
+      border-left: 3px solid #c026d3;
+      padding: 8px 10px;
+      border-radius: 0 6px 6px 0;
+      font-size: 9.5pt;
+      font-style: italic;
+      color: #4a044e;
+    }
+    .voice-box strong {
+      color: #a21caf;
+      display: block;
+      font-style: normal;
+      margin-bottom: 4px;
+    }
+    .tips-box {
+      background: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 12px;
+      font-size: 9.5pt;
+    }
+    .tips-box strong {
+      color: #047857;
+    }
+    .page-break {
+      page-break-before: always;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="badge-row">
+      <span class="badge badge-primary">Odoo Hackathon 2026</span>
+      <span class="badge badge-success">5-Minute Presentation Guide</span>
+      <span class="badge badge-warning">Video Recording Script</span>
+    </div>
+    <h1>Dayflow HRMS — Official Demo Script & Recording Master Guide</h1>
+    <div class="subtitle">Complete Step-by-Step Screen Recording Actions, Timing & Word-for-Word Voiceover Script</div>
+  </div>
+
+  <div class="meta-box">
+    <div><strong>Project Name:</strong> Dayflow HRMS</div>
+    <div><strong>Developer:</strong> Kavish (@jonekavish-dot)</div>
+    <div><strong>Live Production URL:</strong> https://dayflow-peach.vercel.app</div>
+    <div><strong>Local Development:</strong> http://localhost:3000</div>
+    <div><strong>Architecture:</strong> Dual-Engine (SQLite Offline + PostgreSQL Cloud)</div>
+    <div><strong>Target Duration:</strong> Exactly 5:00 Minutes (300 Seconds)</div>
+  </div>
+
+  <h2>🛠️ Part 1: Recording Setup & Audio Checklist</h2>
+  <ul>
+    <li><strong>Screen Resolution:</strong> 1080p (1920 × 1080) Full Screen in Chrome or Edge.</li>
+    <li><strong>Browser View:</strong> Press <code>F11</code> (Full Screen) and hide Bookmarks bar (<code>Ctrl + Shift + B</code>) for a clean UI.</li>
+    <li><strong>Starting Location:</strong> Open <code>http://localhost:3000</code> or <code>https://dayflow-peach.vercel.app</code> on the <strong>Animated Intro Screen</strong>.</li>
+    <li><strong>Recording Tool:</strong> Windows Game Bar (<code>Win + Alt + R</code>), OBS Studio, or Loom.</li>
+    <li><strong>Audio Pacing:</strong> Speak clearly and energetically; pause for 1 second after major clicks to let visual transitions render.</li>
+  </ul>
+
+  <h2>⏱️ Part 2: 5-Minute Master Timeline Breakdown</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 15%;">Timestamp</th>
+        <th style="width: 35%;">Scene & Focus Area</th>
+        <th style="width: 50%;">Key Highlight Demonstrated</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>0:00 – 0:45</strong></td>
+        <td>1. Intro Hero & Glassmorphism Design</td>
+        <td>Glowing bezier paths, animated CTA, Dark/Light theme switcher.</td>
+      </tr>
+      <tr>
+        <td><strong>0:45 – 1:40</strong></td>
+        <td>2. Signup & 6-Digit Email Verification</td>
+        <td>Scrypt password hashing, 6-digit dev token, 1-click clipboard copy.</td>
+      </tr>
+      <tr>
+        <td><strong>1:40 – 2:35</strong></td>
+        <td>3. Employee Flow & Attendance Logging</td>
+        <td>Live monospace clock, attendance check-in/out, leave quota meter.</td>
+      </tr>
+      <tr>
+        <td><strong>2:35 – 3:30</strong></td>
+        <td>4. HR Command Center & Directory</td>
+        <td>Attendance rate gauge, leave approvals, searchable employee modal.</td>
+      </tr>
+      <tr>
+        <td><strong>3:30 – 4:15</strong></td>
+        <td>5. Admin Portal & Payroll Processing</td>
+        <td>Salary adjustments, allowances/deductions, instant notifications.</td>
+      </tr>
+      <tr>
+        <td><strong>4:15 – 4:45</strong></td>
+        <td>6. Notifications & SPA Deep-Linking</td>
+        <td>Unread alert center, browser history navigation, anti-flicker refresh.</td>
+      </tr>
+      <tr>
+        <td><strong>4:45 – 5:00</strong></td>
+        <td>7. Dual-Engine DB & Wrap-Up</td>
+        <td>SQLite local-first + PostgreSQL cloud, 6/6 test pass, closing.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="page-break"></div>
+
+  <h2>🎙️ Part 3: Scene-by-Scene Actions & Voiceover Script</h2>
+
+  <!-- Scene 1 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-title">Scene 1: Introduction & Animated Hero Landing</span>
+      <span class="scene-time">0:00 – 0:45 (45s)</span>
+    </div>
+    <div class="action-box">
+      <strong>🖥️ Visual Actions on Screen:</strong>
+      1. Start at <code>http://localhost:3000</code> on the Animated Intro screen.<br>
+      2. Hover over the glowing animated bezier background curves and gradient orb.<br>
+      3. Click the Sun/Moon theme switcher in the topbar (toggle Light & Dark Mode).<br>
+      4. Click the pulsing "Enter to Continue →" button to transition to <code>/login</code>.<br>
+      5. Highlight the 1-Click Quick Login buttons (Admin, HR Officer, Employee).
+    </div>
+    <div class="voice-box">
+      <strong>🗣️ Word-for-Word Voiceover:</strong>
+      "Hello judges and hackathon evaluation team! Welcome to Dayflow HRMS — an ultra-modern, local-first Human Resource Management System built for the Odoo Hackathon 2026.<br><br>
+      In most enterprises, HR systems are sluggish, cluttered, and burdened by heavy framework bloat. Dayflow was engineered from the ground up to be ultra-fast, zero-dependency, and local-first — while delivering a stunning, SaaS-grade Glassmorphism experience.<br><br>
+      Notice our dynamic intro screen with glowing bezier curves and our instant dark-to-light theme engine. Let’s enter the portal and see how Dayflow transforms the HR experience!"
+    </div>
+  </div>
+
+  <!-- Scene 2 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-title">Scene 2: New User Signup & 6-Digit Email Verification</span>
+      <span class="scene-time">0:45 – 1:40 (55s)</span>
+    </div>
+    <div class="action-box">
+      <strong>🖥️ Visual Actions on Screen:</strong>
+      1. Click "Sign Up" on the login screen (SPA navigates to <code>/signup</code>).<br>
+      2. Fill form: Full Name: <code>Jordan Lee</code>, Emp ID: <code>DF-TEST-777</code>, Email: <code>jordan.lee@example.com</code>, Password: <code>ValidPassword!123</code>, Role: <code>Employee</code>.<br>
+      3. Click "Create Account" → navigates to <code>/verify</code>.<br>
+      4. Point out the 6-Digit Verification Code displayed on screen. Click "Copy Code".<br>
+      5. Paste code into input and click "Verify Email" → shows toast and redirects to <code>/login</code>.
+    </div>
+    <div class="voice-box">
+      <strong>🗣️ Word-for-Word Voiceover:</strong>
+      "Security and verification are core to Dayflow. Let’s register a brand-new employee account.<br><br>
+      Our backend utilizes strong scrypt password hashing with cryptographic salts and strict input validation. Notice how client-side SPA routing transitions to /signup without a full page reload.<br><br>
+      Upon submitting, Dayflow issues a secure 6-digit email verification token with a 15-minute expiration timestamp. For judge testing convenience, the token is provided right on screen with a 1-click clipboard copy button.<br><br>
+      Once verified, the account is activated in the database, and we're ready to sign in."
+    </div>
+  </div>
+
+  <!-- Scene 3 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-title">Scene 3: Employee Portal & Attendance Workflow</span>
+      <span class="scene-time">1:40 – 2:35 (55s)</span>
+    </div>
+    <div class="action-box">
+      <strong>🖥️ Visual Actions on Screen:</strong>
+      1. Click the green 🟢 Employee quick-login button (<code>employee@dayflow.local</code>).<br>
+      2. Point out Live Monospace Digital Clock and Annual Leave Quota Meter (X / 25 days).<br>
+      3. Click "Attendance" in sidebar (<code>/attendance</code>) → Click "Check In Now" (or show timestamp).<br>
+      4. Click "Leave" in sidebar (<code>/leave</code>) → Fill paid leave: next Monday to Wednesday, remarks: "Attending annual tech conference".<br>
+      5. Click "Submit Request" → Show new request with yellow PENDING badge → Click "Sign Out".
+    </div>
+    <div class="voice-box">
+      <strong>🗣️ Word-for-Word Voiceover:</strong>
+      "Let’s sign in as our seeded employee, Emery Patel, using our 1-click test button.<br><br>
+      The Employee Dashboard features a live digital clock synchronized with timezone boundaries, today's attendance status, and a visual leave quota gauge showing remaining balance.<br><br>
+      Under Attendance, employees can log their check-ins with exact timestamp precision. Our system prevents duplicate check-ins and validates work hours.<br><br>
+      Now let's apply for time off. The leave manager validates against overlapping requests and date errors. As soon as Emery submits this paid leave request, an alert is automatically dispatched to the HR team. Let’s log in as HR and approve it."
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- Scene 4 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-title">Scene 4: HR Officer Command Center & Directory</span>
+      <span class="scene-time">2:35 – 3:30 (55s)</span>
+    </div>
+    <div class="action-box">
+      <strong>🖥️ Visual Actions on Screen:</strong>
+      1. Click yellow 🟡 HR Officer button (<code>hr@dayflow.local</code>).<br>
+      2. Show Staff Dashboard: Live Company Attendance Rate Meter (gradient gauge) and present/absent breakdown.<br>
+      3. Navigate to "Leave" → Find Emery Patel's request → Click "Approve".<br>
+      4. Add comment: "Approved. Please share conference notes upon return." → Confirm → Badge turns green APPROVED.<br>
+      5. Navigate to "Employees" → Type "Engineering" in search → Click employee card to open Profile Modal → Sign Out.
+    </div>
+    <div class="voice-box">
+      <strong>🗣️ Word-for-Word Voiceover:</strong>
+      "Switching to our HR Officer, Harper Rao.<br><br>
+      The Staff Dashboard immediately surfaces high-level workforce metrics — including a live company-wide attendance percentage meter, active employee counts, and pending approval queues.<br><br>
+      Under the Leave Command Center, HR has full visibility over company-wide requests. Here is Emery's conference leave. HR can add personalized feedback and approve or reject in real time.<br><br>
+      In the Employee Directory, HR and Administrators can search and filter across departments, and click any profile to inspect or update contact info, job titles, and documentation."
+    </div>
+  </div>
+
+  <!-- Scene 5 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-title">Scene 5: Admin Executive Portal & Payroll Processing</span>
+      <span class="scene-time">3:30 – 4:15 (45s)</span>
+    </div>
+    <div class="action-box">
+      <strong>🖥️ Visual Actions on Screen:</strong>
+      1. Click red 🔴 Admin button (<code>admin@dayflow.local</code>).<br>
+      2. Navigate to "Payroll" (<code>/payroll</code>) → Show company salary ledger.<br>
+      3. Click "Edit Payroll" for employee → Set Basic: ₹70,000, Allowances: ₹15,000, Deductions: ₹2,500.<br>
+      4. Click "Save Payroll" → Show success toast alert.<br>
+      5. Navigate to "Settings" (<code>/settings</code>) → Show session diagnostics & RBAC permissions → Sign Out.
+    </div>
+    <div class="voice-box">
+      <strong>🗣️ Word-for-Word Voiceover:</strong>
+      "Now logging in as Avery Admin to demonstrate executive controls.<br><br>
+      Under Payroll Management, administrators have full compensation oversight. Dayflow automatically computes net CTC from basic pay, custom allowances, and statutory deductions.<br><br>
+      When an admin adjusts or processes a monthly payroll record, Dayflow updates the ledger with atomic transactions and automatically dispatches a confidential notification to that employee.<br><br>
+      The Settings portal provides session security audits and direct password management with RBAC enforcement."
+    </div>
+  </div>
+
+  <!-- Scene 6 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-title">Scene 6: In-App Notifications & SPA Deep-Linking</span>
+      <span class="scene-time">4:15 – 4:45 (30s)</span>
+    </div>
+    <div class="action-box">
+      <strong>🖥️ Visual Actions on Screen:</strong>
+      1. Log back in as 🟢 Employee (<code>employee@dayflow.local</code>).<br>
+      2. Show unread notification count badge in topbar and sidebar.<br>
+      3. Click "Notifications" (<code>/notifications</code>) → Show Leave Approved & Payroll Updated notices.<br>
+      4. Click "Mark All as Read".<br>
+      5. Test SPA History: Click browser Back button, Forward button, then press Ctrl + R (hard refresh) to demonstrate zero-flicker reload.
+    </div>
+    <div class="voice-box">
+      <strong>🗣️ Word-for-Word Voiceover:</strong>
+      "Back in Emery's portal, the notification center has received real-time updates for both the approved leave and the updated payroll slip.<br><br>
+      Notice our robust client-side architecture: clicking the browser's Back and Forward buttons navigates through browser history seamlessly. Deep-linking directly to any route or refreshing the page preserves authentication and view state with zero layout flicker."
+    </div>
+  </div>
+
+  <!-- Scene 7 -->
+  <div class="scene-card">
+    <div class="scene-header">
+      <span class="scene-title">Scene 7: Dual-Engine Architecture & Closing</span>
+      <span class="scene-time">4:45 – 5:00 (15s)</span>
+    </div>
+    <div class="action-box">
+      <strong>🖥️ Visual Actions on Screen:</strong>
+      1. Show terminal running <code>node --test</code> (6/6 tests passing) or browser with <code>https://dayflow-peach.vercel.app</code>.<br>
+      2. Return to the Dayflow intro landing page and end with the clean branding.
+    </div>
+    <div class="voice-box">
+      <strong>🗣️ Word-for-Word Voiceover:</strong>
+      "Under the hood, Dayflow is powered by a Dual-Engine Database Abstraction Layer.<br><br>
+      Locally, it runs 100% offline using native Node.js and SQLite with zero external dependencies. In production on Vercel, it connects seamlessly to serverless PostgreSQL with connection pooling and SSL.<br><br>
+      With 6/6 automated integration tests passing and zero framework bloat, Dayflow HRMS represents the future of fast, elegant, and local-first enterprise software. Thank you for watching!"
+    </div>
+  </div>
+
+  <div class="tips-box">
+    <strong>🏆 Pro Hackathon Presentation Tips:</strong>
+    <ol>
+      <li><strong>Cursor Discipline:</strong> Avoid erratic mouse movements. Click steadily and let each screen view settle.</li>
+      <li><strong>1-Click Testing:</strong> Leverage the colored login buttons on <code>/login</code> to switch roles in under 2 seconds.</li>
+      <li><strong>Highlight Native Standards:</strong> Emphasize Vanilla JS, Native Node.js, and zero heavy npm framework bloat.</li>
+    </ol>
+  </div>
+
+</body>
+</html>

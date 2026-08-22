@@ -15,5 +15,8 @@
   },
   "engines": {
     "node": "22.x"
+  },
+  "devDependencies": {
+    "pdfkit": "^0.19.1"
   }
 }
