@@ -1,7 +1,8 @@
 # Dayflow HRMS — Modern Human Resource Management System
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-6366f1?style=for-the-badge&logo=vercel)](https://dayflow-peach.vercel.app)
-[![Tests](https://img.shields.io/badge/Tests-5%2F5%20Passing-10b981?style=for-the-badge&logo=node.js)](https://github.com/jonekavish-dot/DAYFLOW-ODOO-NMIT-HACKATHON-2026)
+[![Tests](https://img.shields.io/badge/Tests-6%2F6%20Passing-10b981?style=for-the-badge&logo=node.js)](https://github.com/jonekavish-dot/DAYFLOW-ODOO-NMIT-HACKATHON-2026)
+[![Author](https://img.shields.io/badge/Author-jonekavish--dot-blue?style=for-the-badge&logo=github)](https://github.com/jonekavish-dot)
 [![Hackathon](https://img.shields.io/badge/Odoo%20Hackathon-2026-ff5722?style=for-the-badge)](https://github.com/jonekavish-dot/DAYFLOW-ODOO-NMIT-HACKATHON-2026)
 
 **Dayflow** is an ultra-modern, local-first Human Resource Management System (HRMS) engineered for the **Odoo Hackathon 2026**. It features a full SaaS-grade Glassmorphism interface, complete client-side SPA routing with browser history and direct URL access, role-based access control, dual-engine database persistence (SQLite local-first + PostgreSQL cloud production), real-time KPI metrics, interactive attendance & leave workflows, payroll management, and an in-app notification center.
@@ -16,14 +17,11 @@
 
 ---
 
-## 👥 Team Members & Domain Contributions
+## 👤 Author & Developer
 
-| Team Member | GitHub Username | GitHub Email | Role & Domain Contribution |
+| Creator | GitHub Handle | Email | Role |
 |---|---|---|---|
-| **Kavish** | [`jonekavish-dot`](https://github.com/jonekavish-dot) | `jonekavish@gmail.com` | **Lead Architect**: Core SPA routing engine, HTML5 history isolation, and REST API controller infrastructure. |
-| **Gowshik Gunal** | [`gowshikgunal22`](https://github.com/gowshikgunal22) | `gowshikgunal@gmail.com` | **QA & Backend Engineer**: Relational schema constraints, data integrity hardening, and end-to-end integration test suite. |
-| **Pranesh K V** | [`kvpranesh`](https://github.com/kvpranesh) | `kvpranesh49@gmail.com` | **UI/UX & Frontend Engineer**: Ultra-modern Glassmorphism design system, dark/light theme engine, and dashboard progress meters. |
-| **Vivin K G** | [`kgvivin`](https://github.com/kgvivin) | `kgvivin@gmail.com` | **DevOps & Cloud Engineer**: Animated intro landing hero, Vercel Serverless Function entrypoint, and Dual-Engine persistence adapter. |
+| **Kavish** | [`jonekavish-dot`](https://github.com/jonekavish-dot) | `jonekavish@gmail.com` | **Full Stack Developer & Lead Architect** |
 
 ---
 
