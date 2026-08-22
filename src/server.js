@@ -47,7 +47,9 @@ const attendanceRow = (db, id) => db.prepare(`
          u.employee_id AS employeeCode, p.full_name AS employeeName
   FROM attendance a JOIN users u ON u.id = a.employee_id JOIN employee_profiles p ON p.user_id = u.id WHERE a.id = ?`).get(id);
 
-const leaveRows = (db, where, value) => db.prepare(`
+const leaveRows = (db, where, ...params) => {
+  const args = params.filter((p) => p !== undefined);
+  return db.prepare(`
   SELECT l.id, l.leave_type AS leaveType, l.start_date AS startDate, l.end_date AS endDate, l.remarks, l.status,
          l.reviewer_comments AS reviewerComments, l.created_at AS createdAt, l.decided_at AS decidedAt,
          l.employee_id AS ownerId,
@@ -56,7 +58,8 @@ const leaveRows = (db, where, value) => db.prepare(`
   FROM leave_requests l
   JOIN users u ON u.id = l.employee_id JOIN employee_profiles p ON p.user_id = u.id
   LEFT JOIN users reviewer ON reviewer.id = l.reviewer_id LEFT JOIN employee_profiles reviewerProfile ON reviewerProfile.user_id = reviewer.id
-  WHERE ${where} ORDER BY l.created_at DESC`).all(value);
+  WHERE ${where} ORDER BY l.created_at DESC`).all(...args);
+};
 
 function createNotification(db, userId, type, title, message, relatedId = null) {
   db.prepare('INSERT INTO notifications (id, user_id, type, title, message, related_id) VALUES (?, ?, ?, ?, ?, ?)')
@@ -310,7 +313,8 @@ export function createApp({ dbPath = DEFAULT_DB, seed = true } = {}) {
         requireRole(currentUser, 'HR', 'ADMIN');
         const requestedStatus = searchParams.get('status');
         if (requestedStatus) enumValue(requestedStatus, LEAVE_STATUSES, 'Leave status');
-        return json(res, 200, { leaves: leaveRows(db, requestedStatus ? 'l.status = ?' : '1 = 1', requestedStatus) });
+        const where = requestedStatus ? 'l.status = ?' : '1 = 1';
+        return json(res, 200, { leaves: requestedStatus ? leaveRows(db, where, requestedStatus) : leaveRows(db, where) });
       }
 
       const leaveDecisionMatch = /^\/api\/leaves\/([^/]+)\/decision$/.exec(pathname);
