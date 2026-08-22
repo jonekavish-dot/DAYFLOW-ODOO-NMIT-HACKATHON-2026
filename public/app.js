@@ -445,6 +445,33 @@ $('#menu-btn').addEventListener('click', toggleSidebar);
 $('#sidebar-close').addEventListener('click', () => closeSidebar(true));
 $('#sidebar-overlay').addEventListener('click', () => closeSidebar(false));
 
+// Theme Toggle Handler (Dark / Light Mode)
+function initTheme() {
+  const savedTheme = localStorage.getItem('dayflowTheme') || 'light';
+  applyTheme(savedTheme);
+}
+
+function applyTheme(theme) {
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark');
+    $('#theme-sun-icon')?.removeAttribute('hidden');
+    $('#theme-moon-icon')?.setAttribute('hidden', '');
+  } else {
+    document.documentElement.classList.remove('dark');
+    $('#theme-sun-icon')?.setAttribute('hidden', '');
+    $('#theme-moon-icon')?.removeAttribute('hidden');
+  }
+  localStorage.setItem('dayflowTheme', theme);
+}
+
+$('#theme-toggle-btn')?.addEventListener('click', () => {
+  const isDark = document.documentElement.classList.contains('dark');
+  applyTheme(isDark ? 'light' : 'dark');
+  toast(isDark ? 'Switched to light theme' : 'Switched to dark theme', 'info');
+});
+
+initTheme();
+
 // ==========================================================================
 // Sidebar Navigation Component
 // ==========================================================================
@@ -560,11 +587,20 @@ window.markAllNotificationsRead = async function() {
   }
 };
 
+function getGreeting() {
+  const hr = new Date().getHours();
+  if (hr < 12) return 'Good morning';
+  if (hr < 17) return 'Good afternoon';
+  return 'Good evening';
+}
+
 // ==========================================================================
 // Route View: /dashboard
 // ==========================================================================
 async function renderDashboard() {
   const data = await api('/api/dashboard');
+  const greeting = getGreeting();
+  const firstName = esc(state.user.fullName.split(' ')[0]);
 
   if (data.kind === 'employee') {
     const att = data.attendance;
@@ -572,6 +608,14 @@ async function renderDashboard() {
     const isCheckedOut = !!att?.check_out_at;
 
     view.innerHTML = `
+      <div class="welcome-banner">
+        <div>
+          <div class="welcome-title">${greeting}, ${firstName} 👋</div>
+          <div class="welcome-sub">Here is your workday snapshot for <strong>${dateText(data.today)}</strong>.</div>
+        </div>
+        <span class="badge badge-present"><span class="badge-dot"></span>Active</span>
+      </div>
+
       <div class="metrics-grid">
         <div class="metric-card">
           <div class="metric-header">
@@ -661,6 +705,14 @@ async function renderDashboard() {
 
   // Staff Dashboard
   view.innerHTML = `
+    <div class="welcome-banner">
+      <div>
+        <div class="welcome-title">${greeting}, ${firstName} 👋</div>
+        <div class="welcome-sub">Here is your organisation overview for <strong>${dateText(data.today)}</strong>.</div>
+      </div>
+      <span class="badge badge-leave"><span class="badge-dot"></span>${esc(state.user.role)} Portal</span>
+    </div>
+
     <div class="metrics-grid">
       <div class="metric-card">
         <div class="metric-header">
