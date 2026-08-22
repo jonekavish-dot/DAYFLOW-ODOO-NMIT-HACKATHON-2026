@@ -1,6 +1,29 @@
 # Dayflow HRMS — Modern Human Resource Management System
 
-Dayflow is an ultra-modern, local-first Human Resource Management System (HRMS) built for the Odoo Hackathon 2026. It features a complete SaaS-grade Glassmorphism interface, full client-side SPA routing with browser history and direct URL access, role-based access control, dual-engine database persistence (SQLite local-first + PostgreSQL production), real-time metrics, interactive attendance & leaves management, payroll visibility, and an in-app notification center.
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel%20Production-6366f1?style=for-the-badge&logo=vercel)](https://dayflow-peach.vercel.app)
+[![Tests](https://img.shields.io/badge/Tests-5%2F5%20Passing-10b981?style=for-the-badge&logo=node.js)](https://github.com/jonekavish-dot/DAYFLOW-ODOO-NMIT-HACKATHON-2026)
+[![Hackathon](https://img.shields.io/badge/Odoo%20Hackathon-2026-ff5722?style=for-the-badge)](https://github.com/jonekavish-dot/DAYFLOW-ODOO-NMIT-HACKATHON-2026)
+
+**Dayflow** is an ultra-modern, local-first Human Resource Management System (HRMS) engineered for the **Odoo Hackathon 2026**. It features a full SaaS-grade Glassmorphism interface, complete client-side SPA routing with browser history and direct URL access, role-based access control, dual-engine database persistence (SQLite local-first + PostgreSQL cloud production), real-time KPI metrics, interactive attendance & leave workflows, payroll management, and an in-app notification center.
+
+---
+
+## 🌐 Live URLs & Links
+
+- 🚀 **Live Production Application**: **[https://dayflow-peach.vercel.app](https://dayflow-peach.vercel.app)**
+- 📦 **GitHub Repository**: **[https://github.com/jonekavish-dot/DAYFLOW-ODOO-NMIT-HACKATHON-2026](https://github.com/jonekavish-dot/DAYFLOW-ODOO-NMIT-HACKATHON-2026)**
+- 💻 **Local Development**: `http://localhost:3000`
+
+---
+
+## 👥 Team Members & Domain Contributions
+
+| Team Member | GitHub Username | GitHub Email | Role & Domain Contribution |
+|---|---|---|---|
+| **Kavish** | [`jonekavish-dot`](https://github.com/jonekavish-dot) | `jonekavish@gmail.com` | **Lead Architect**: Core SPA routing engine, HTML5 history isolation, and REST API controller infrastructure. |
+| **Gowshik Gunal** | [`gowshikgunal22`](https://github.com/gowshikgunal22) | `gowshikgunal@gmail.com` | **QA & Backend Engineer**: Relational schema constraints, data integrity hardening, and end-to-end integration test suite. |
+| **Pranesh K V** | [`kvpranesh`](https://github.com/kvpranesh) | `kvpranesh49@gmail.com` | **UI/UX & Frontend Engineer**: Ultra-modern Glassmorphism design system, dark/light theme engine, and dashboard progress meters. |
+| **Vivin K G** | [`kgvivin`](https://github.com/kgvivin) | `kgvivin@gmail.com` | **DevOps & Cloud Engineer**: Animated intro landing hero, Vercel Serverless Function entrypoint, and Dual-Engine persistence adapter. |
 
 ---
 
@@ -8,8 +31,8 @@ Dayflow is an ultra-modern, local-first Human Resource Management System (HRMS) 
 
 - **Dual-Engine Persistence**:
   - **Local Development / Offline / Hackathon**: 100% local-first SQLite (`node:sqlite`) with zero cloud dependencies.
-  - **Production / Cloud (Vercel)**: Serverless-compatible PostgreSQL (`pg`) with connection pooling and auto-schema initialization.
-- **True SPA Routing with Browser History**: Distinct isolated page views for `/dashboard`, `/employees`, `/employees/:id`, `/attendance`, `/leave`, `/payroll`, `/notifications`, `/profile`, `/settings`, and `/404`. Supports Back/Forward browser buttons, direct URL deep-linking, and route-preserving refresh.
+  - **Production / Cloud (Vercel)**: Serverless-compatible PostgreSQL (`pg`) with connection pooling, SSL, and auto-schema migration.
+- **True SPA Routing with Browser History**: Distinct isolated page views for `/`, `/intro`, `/dashboard`, `/employees`, `/employees/:id`, `/attendance`, `/leave`, `/payroll`, `/notifications`, `/profile`, `/settings`, and `/404`. Supports Back/Forward browser buttons, direct URL deep-linking, and route-preserving refresh.
 - **Glassmorphism Design System**: Ultra-modern frosted glass cards (`backdrop-filter: blur(28px)`), cosmic mesh gradients, floating animated bezier curves, and dark/light theme switching.
 - **Testing Convenience**: 1-click quick-login buttons on the authentication page for instant testing as Admin, HR Officer, or Employee.
 - **Complete Relational Schema**: Normalized tables for users, profiles, attendance, leave requests, payroll history, and notifications.
@@ -95,7 +118,7 @@ npm test
 ## 🎬 Recommended Judge Demo Flow
 
 1. **Animated Intro & Quick Login**:
-   - Open `http://localhost:3000` to see the animated floating paths hero. Click **Enter to Continue**.
+   - Open `http://localhost:3000` (or `https://dayflow-peach.vercel.app`) to see the animated floating paths hero. Click **Enter to Continue**.
    - Click the green **Employee** quick-login button.
    - On the Dashboard, verify the live clock and check-in status.
    - Click **Leave** in sidebar &rarr; apply for leave next week.
