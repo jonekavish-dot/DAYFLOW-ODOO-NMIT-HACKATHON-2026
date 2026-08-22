@@ -5,7 +5,11 @@ import { randomUUID } from 'node:crypto';
 import { hashPassword } from './auth.js';
 
 export function openDatabase(filename) {
-  mkdirSync(dirname(filename), { recursive: true });
+  if (filename && filename !== ':memory:' && !filename.startsWith(':memory:')) {
+    try {
+      mkdirSync(dirname(filename), { recursive: true });
+    } catch {}
+  }
   const db = new DatabaseSync(filename);
   db.exec('PRAGMA foreign_keys = ON;');
   db.exec(`
