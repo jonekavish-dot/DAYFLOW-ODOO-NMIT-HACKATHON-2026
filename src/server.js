@@ -1,5 +1,7 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
@@ -10,11 +12,14 @@ import {
   cents, date, email, employeeId, enumValue, fail, month, optionalString, password, requiredString, url,
 } from './validation.js';
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const publicDir = resolve(__dirname, '../public');
-const DEFAULT_DB = resolve(__dirname, '../data/dayflow.db');
-const mime = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
 const runtimeProcess = globalThis.process;
+const __dirname = fileURLToPath(new URL('.', import.meta.url));
+const isServerless = !!(runtimeProcess?.env?.VERCEL || runtimeProcess?.env?.AWS_LAMBDA_FUNCTION_NAME || runtimeProcess?.env?.NOW_REGION);
+const publicDir = existsSync(resolve(__dirname, '../public'))
+  ? resolve(__dirname, '../public')
+  : resolve(runtimeProcess?.cwd?.() || '.', 'public');
+const DEFAULT_DB = isServerless ? join(tmpdir(), 'dayflow.db') : resolve(__dirname, '../data/dayflow.db');
+const mime = { '.html': 'text/html; charset=utf-8', '.js': 'application/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.svg': 'image/svg+xml', '.png': 'image/png', '.ico': 'image/x-icon' };
 
 const json = (res, status, data) => {
   res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
