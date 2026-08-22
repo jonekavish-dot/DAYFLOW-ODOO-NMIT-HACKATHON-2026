@@ -150,9 +150,12 @@ document.addEventListener('click', (e) => {
 
 async function handleRoute() {
   let path = window.location.pathname;
-  if (path === '/') path = state.token ? '/dashboard' : '/login';
 
-  state.currentPath = path;
+  // Intro Landing Page (always accessible on / and /intro)
+  if (path === '/' || path === '/intro') {
+    showIntroScreen();
+    return;
+  }
 
   // Unauthenticated user flow
   if (!state.token) {
@@ -164,7 +167,6 @@ async function handleRoute() {
       showAuthScreen('verify');
       return;
     }
-    // Default unauthenticated is login
     if (path !== '/login') {
       navigateTo('/login', true);
       return;
@@ -193,6 +195,7 @@ async function handleRoute() {
   }
 
   // Enter application shell
+  $('#intro-shell').hidden = true;
   $('#auth-shell').hidden = true;
   $('#app-shell').hidden = false;
 
@@ -204,11 +207,10 @@ async function handleRoute() {
   renderSidebarNav();
   await fetchNotifications();
 
-  // Apply saved sidebar preference on desktop / close on mobile
-  if (window.innerWidth > 860 && localStorage.getItem('dayflowSidebarCollapsed') === 'true') {
-    closeSidebar(false);
-  } else if (window.innerWidth <= 860) {
-    closeSidebar(false);
+  // Close mobile sidebar only on mobile screen widths without desktop flicker
+  if (window.innerWidth <= 860) {
+    $('#sidebar').classList.remove('open');
+    $('#sidebar-overlay').classList.remove('open');
   }
 
   // Route Dispatcher
@@ -297,9 +299,18 @@ function render404() {
 }
 
 // ==========================================================================
-// Authentication Handlers
 // ==========================================================================
+// Intro & Authentication Handlers
+// ==========================================================================
+function showIntroScreen() {
+  $('#app-shell').hidden = true;
+  $('#auth-shell').hidden = true;
+  $('#intro-shell').hidden = false;
+  document.title = 'Dayflow HRMS — Modern Workforce Platform';
+}
+
 function showAuthScreen(name) {
+  $('#intro-shell').hidden = true;
   $('#app-shell').hidden = true;
   $('#auth-shell').hidden = false;
   ['login', 'register', 'verify'].forEach((id) => {
@@ -309,6 +320,12 @@ function showAuthScreen(name) {
   $('#dev-code-box').innerHTML = '';
   document.title = name === 'login' ? 'Sign in — Dayflow' : name === 'register' ? 'Sign up — Dayflow' : 'Verify — Dayflow';
 }
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !$('#intro-shell').hidden) {
+    navigateTo('/login');
+  }
+});
 
 $$('[data-auth-view]').forEach((btn) => {
   btn.addEventListener('click', () => {
@@ -367,6 +384,22 @@ $('#login-form').addEventListener('submit', async (e) => {
   }
 });
 
+$('#forgot-pw-btn')?.addEventListener('click', () => {
+  openModal(`
+    <div class="modal-header">
+      <h3>Reset Your Password</h3>
+      <button class="icon-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p style="margin-bottom:1rem; color:var(--text-main);">For security in Dayflow HRMS, password resets are handled via your HR Administrator or through the in-app Settings portal once authenticated.</p>
+      <p style="color:var(--text-muted); font-size:0.875rem;">If you are testing the platform during the hackathon, you can use any of the <strong>1-Click Quick Login</strong> buttons on the sign-in page to instantly access an Admin, HR, or Employee account.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal()">Got it</button>
+    </div>
+  `);
+});
+
 $('#register-form').addEventListener('submit', async (e) => {
   e.preventDefault();
   clearAlert($('#auth-message'));
@@ -406,7 +439,7 @@ $('#logout-btn').addEventListener('click', () => {
   state.token = null;
   state.user = null;
   toast('Signed out successfully.', 'info');
-  navigateTo('/login');
+  navigateTo('/intro');
 });
 
 // Sidebar Toggle & Collapse Handlers (Desktop & Mobile with localStorage persistence)
@@ -442,13 +475,25 @@ function toggleSidebar() {
 }
 
 $('#menu-btn').addEventListener('click', toggleSidebar);
-$('#sidebar-close').addEventListener('click', () => closeSidebar(true));
+$('#sidebar-close')?.addEventListener('click', () => closeSidebar(true));
 $('#sidebar-overlay').addEventListener('click', () => closeSidebar(false));
 
 // Theme Toggle Handler (Dark / Light Mode)
 function initTheme() {
   const savedTheme = localStorage.getItem('dayflowTheme') || 'light';
   applyTheme(savedTheme);
+}
+
+function initSidebar() {
+  const isSavedCollapsed = localStorage.getItem('dayflowSidebarCollapsed') === 'true';
+  if (isSavedCollapsed && window.innerWidth > 860) {
+    $('#sidebar').classList.add('closed');
+    $('#app-shell').classList.add('sidebar-collapsed');
+  }
+  // Clear preload override smoothly on next frame
+  requestAnimationFrame(() => {
+    document.documentElement.classList.remove('sidebar-collapsed-preload');
+  });
 }
 
 function applyTheme(theme) {
@@ -471,6 +516,7 @@ $('#theme-toggle-btn')?.addEventListener('click', () => {
 });
 
 initTheme();
+initSidebar();
 
 // ==========================================================================
 // Sidebar Navigation Component
@@ -641,7 +687,15 @@ async function renderDashboard() {
             <div class="metric-icon-wrap green">${icons.leaves}</div>
           </div>
           <div class="metric-val">${data.approvedLeaves}</div>
-          <div class="metric-footer">This year</div>
+          <div class="metric-footer">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+              <span>Quota Used</span>
+              <strong>${data.approvedLeaves} / 25 d</strong>
+            </div>
+            <div style="background:rgba(99,102,241,0.12); height:6px; border-radius:9999px; overflow:hidden;">
+              <div style="background:linear-gradient(90deg, #10b981 0%, #059669 100%); height:100%; width:${Math.min(100, Math.round((data.approvedLeaves / 25) * 100))}%; border-radius:9999px;"></div>
+            </div>
+          </div>
         </div>
 
         <div class="metric-card">
@@ -650,7 +704,7 @@ async function renderDashboard() {
             <div class="metric-icon-wrap indigo">${icons.payroll}</div>
           </div>
           <div class="metric-val" style="font-size:1.5rem;">${money(data.salaryCents)}</div>
-          <div class="metric-footer">Base CTC</div>
+          <div class="metric-footer">Base CTC &bull; Paid Monthly</div>
         </div>
       </div>
 
@@ -704,6 +758,8 @@ async function renderDashboard() {
   }
 
   // Staff Dashboard
+  const attRate = Math.round((data.presentToday / (data.totalEmployees || 1)) * 100);
+
   view.innerHTML = `
     <div class="welcome-banner">
       <div>
@@ -729,7 +785,15 @@ async function renderDashboard() {
           <div class="metric-icon-wrap green">${icons.attendance}</div>
         </div>
         <div class="metric-val">${data.presentToday}</div>
-        <div class="metric-footer">${Math.round((data.presentToday / (data.totalEmployees || 1)) * 100)}% attendance rate</div>
+        <div class="metric-footer">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+            <span>Rate</span>
+            <strong>${attRate}%</strong>
+          </div>
+          <div style="background:rgba(16,185,129,0.15); height:6px; border-radius:9999px; overflow:hidden;">
+            <div style="background:linear-gradient(90deg, #10b981 0%, #059669 100%); height:100%; width:${attRate}%; border-radius:9999px;"></div>
+          </div>
+        </div>
       </div>
 
       <div class="metric-card">
