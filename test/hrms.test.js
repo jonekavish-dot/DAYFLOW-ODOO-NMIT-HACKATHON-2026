@@ -4,7 +4,7 @@ import { createServer } from 'node:http';
 import { createApp } from '../src/server.js';
 
 async function withApp(seed, run) {
-  const app = createApp({ dbPath: ':memory:', seed });
+  const app = await createApp({ dbPath: ':memory:', seed });
   const server = createServer(app.handler);
   await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -18,7 +18,7 @@ async function withApp(seed, run) {
     const data = contentType.includes('application/json') ? await response.json() : await response.text();
     return { status: response.status, data, contentType };
   };
-  try { return await run(request); } finally { await new Promise((resolve) => server.close(resolve)); app.close(); }
+  try { return await run(request); } finally { await new Promise((resolve) => server.close(resolve)); await app.close(); }
 }
 
 async function login(request, email, password) {

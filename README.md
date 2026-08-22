@@ -1,30 +1,49 @@
 # Dayflow HRMS — Modern Human Resource Management System
 
-Dayflow is a fast, local-first, zero-dependency Human Resource Management System (HRMS) built for the Odoo Hackathon 2026. It features a complete SaaS-grade interface, full client-side SPA routing with browser history and direct URL access, role-based access control, persistent SQLite storage, real-time metrics, interactive attendance & leaves management, payroll visibility, and an in-app notification center.
+Dayflow is an ultra-modern, local-first Human Resource Management System (HRMS) built for the Odoo Hackathon 2026. It features a complete SaaS-grade Glassmorphism interface, full client-side SPA routing with browser history and direct URL access, role-based access control, dual-engine database persistence (SQLite local-first + PostgreSQL production), real-time metrics, interactive attendance & leaves management, payroll visibility, and an in-app notification center.
 
 ---
 
 ## 🌟 Key Highlights
 
-- **Zero External Dependencies**: Built with native Node.js 24+ (`node:http`, `node:sqlite`, `node:crypto`) and standard modern Web APIs (ES Modules, HTML5 History API, CSS Custom Properties, Vanilla JS).
+- **Dual-Engine Persistence**:
+  - **Local Development / Offline / Hackathon**: 100% local-first SQLite (`node:sqlite`) with zero cloud dependencies.
+  - **Production / Cloud (Vercel)**: Serverless-compatible PostgreSQL (`pg`) with connection pooling and auto-schema initialization.
 - **True SPA Routing with Browser History**: Distinct isolated page views for `/dashboard`, `/employees`, `/employees/:id`, `/attendance`, `/leave`, `/payroll`, `/notifications`, `/profile`, `/settings`, and `/404`. Supports Back/Forward browser buttons, direct URL deep-linking, and route-preserving refresh.
-- **Local-First & Offline Ready**: Runs completely offline without cloud database dependencies or external CDN font latency.
-- **Modern SaaS UI/UX**: Professional split-screen auth, dark sidebar shell, live clock, status badges, toast alerts, modals, and responsive layout for mobile/desktop.
+- **Glassmorphism Design System**: Ultra-modern frosted glass cards (`backdrop-filter: blur(28px)`), cosmic mesh gradients, floating animated bezier curves, and dark/light theme switching.
 - **Testing Convenience**: 1-click quick-login buttons on the authentication page for instant testing as Admin, HR Officer, or Employee.
-- **Real Relational Persistence**: Complete SQLite database backing users, profiles, attendance, leave requests, payroll history, and notifications.
+- **Complete Relational Schema**: Normalized tables for users, profiles, attendance, leave requests, payroll history, and notifications.
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Local Development)
 
 ### Prerequisites
-- **Node.js 24+** (utilizes native `node:sqlite` module)
+- **Node.js 22+**
 
-### Run the Application
+### Run Locally (100% Offline SQLite)
 ```powershell
-node src/server.js
+npm start
 ```
 Open **`http://localhost:3000`** in your browser.
+
+---
+
+## ☁️ Production Deployment (Vercel + PostgreSQL)
+
+Dayflow is fully configured for Vercel Serverless Functions and Edge CDN asset delivery:
+
+### 1. Database Setup (Neon / Supabase / Vercel Postgres)
+Create a free PostgreSQL database on [Neon.tech](https://neon.tech), [Supabase.com](https://supabase.com), or [Vercel Postgres](https://vercel.com/docs/storage/vercel-postgres).
+
+### 2. Configure Vercel Environment Variables
+In your Vercel Project Settings &rarr; **Environment Variables**, add:
+- `DATABASE_URL`: Your PostgreSQL connection string (e.g. `postgresql://user:pass@ep-xyz.neon.tech/neondb?sslmode=require`)
+- `DAYFLOW_SESSION_SECRET`: A secure random string for signing JWT tokens.
+- `NODE_ENV`: `production`
+
+### 3. Deploy
+Push to GitHub `main` or deploy via Vercel CLI (`vercel --prod`).
 
 ---
 
@@ -47,6 +66,7 @@ Open **`http://localhost:3000`** in your browser.
 
 | Route | Access | Description |
 |---|---|---|
+| `/` or `/intro` | Public | Animated landing hero with glowing paths and CTA |
 | `/login` | Public | Split-screen authentication with 1-click quick login buttons |
 | `/signup` | Public | Account registration form with validation |
 | `/verify` | Public | 6-digit email code verification with clipboard copy |
@@ -67,60 +87,59 @@ Open **`http://localhost:3000`** in your browser.
 Execute the native integration test suite:
 
 ```powershell
-node --test
+npm test
 ```
 
 ---
 
 ## 🎬 Recommended Judge Demo Flow
 
-1. **Quick Login as Employee**:
-   - Click the green **Employee** quick-login button on `http://localhost:3000`.
+1. **Animated Intro & Quick Login**:
+   - Open `http://localhost:3000` to see the animated floating paths hero. Click **Enter to Continue**.
+   - Click the green **Employee** quick-login button.
    - On the Dashboard, verify the live clock and check-in status.
-   - Click **Leave** in sidebar — notice URL changes to `http://localhost:3000/leave`.
-   - Apply for leave next week.
-   - Click **Attendance** — notice URL changes to `http://localhost:3000/attendance`.
-   - Press browser **Back button** — verifies navigation back to `/leave`.
+   - Click **Leave** in sidebar &rarr; apply for leave next week.
+   - Click **Attendance** &rarr; press browser **Back button** to verify SPA history.
    - Sign out.
 
-2. **Quick Login as HR Officer**:
+2. **HR Officer Flow**:
    - Click the yellow **HR Officer** quick-login button.
-   - Navigate to `/leave` — see pending employee request, click **Approve** with comment.
-   - Navigate to `/employees` — search and click an employee to open `/employees/:id`.
+   - Navigate to `/leave` &rarr; approve the pending employee request with comments.
+   - Navigate to `/employees` &rarr; search and view individual employee profiles.
    - Sign out.
 
-3. **Quick Login as Admin**:
-   - Click the red **Admin** quick-login button.
-   - Navigate to `/payroll` — process a monthly payout slip.
-   - Navigate to `/settings` — verify password change interface and session info.
-   - Sign out.
-
-4. **Verify Employee Updates**:
-   - Log back in as **Employee**.
-   - Navigate to `/notifications` — inspect approval & payroll notifications.
-   - Refresh page at `/notifications` — verify route stays on `/notifications`.
-   - Navigate to `/payroll` — verify updated salary and payout records.
+3. **Admin & Employee Verification**:
+   - Log in as **Admin** &rarr; navigate to `/payroll` &rarr; update employee pay slip.
+   - Log back in as **Employee** &rarr; navigate to `/notifications` to verify approval and payroll notifications.
 
 ---
 
 ## 📁 Repository Structure
 
 ```
+├── .env.example          # Environment variables template
+├── api/
+│   └── index.js          # Vercel Serverless Function entry point
 ├── data/
-│   └── dayflow.db        # SQLite database (auto-created on launch)
+│   └── dayflow.db        # Local SQLite database (auto-created)
 ├── docs/
 │   └── SRS.md            # Software Requirements Specification
 ├── public/
-│   ├── app.js            # Single Page Application (SPA) router & client engine
+│   ├── app.js            # SPA router & UI component controllers
 │   ├── index.html        # Main HTML shell & modal/toast containers
-│   └── styles.css        # Modern SaaS CSS design system
+│   └── styles.css        # Ultra-modern Glassmorphism design system
 ├── src/
 │   ├── auth.js           # Password derivation & HMAC token primitives
-│   ├── database.js       # SQLite schema & demo data seeding
-│   ├── server.js         # HTTP REST API & static/SPA route server
+│   ├── db/
+│   │   ├── index.js      # Dual-backend factory (SQLite / PostgreSQL)
+│   │   ├── sqlite.js     # Native SQLite adapter (node:sqlite)
+│   │   ├── postgres.js   # Serverless PostgreSQL adapter (pg)
+│   │   └── seed.js       # Shared demo data seeding engine
+│   ├── server.js         # HTTP REST API & static/SPA server
 │   └── validation.js     # Payload & type validators
 ├── test/
 │   └── hrms.test.js      # Integration test suite
 ├── package.json
+├── vercel.json           # Vercel SPA rewrites & Edge CDN config
 └── README.md
 ```
