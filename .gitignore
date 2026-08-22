@@ -1,3 +1,5 @@
 data/*.db
 data/*.db-*
 node_modules/
+docs/Dayflow_HRMS_Video_Presentation_Guide.*
+scripts/
